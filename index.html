@@ -53,6 +53,8 @@
       background: rgba(6,12,16,0.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
+   
+
     }
     .nav-logo {
       font-family: 'Orbitron', monospace;
@@ -456,19 +458,146 @@
       .flow::before { display: none; }
       .team-note { flex-direction: column; }
     }
+    .theme-toggle{
+  cursor:pointer;
+  font-size:1.2rem;
+  margin-left:1rem;
+  transition:.3s;
+}
+
+.theme-toggle:hover{
+  transform:scale(1.15);
+}
+
+/* LIGHT MODE VARIABLES */
+body.light{
+  --bg:#f4f9fc;
+  --bg2:#ffffff;
+  --bg3:#eef3f7;
+  --card:#ffffff;
+  --green:#00a86b;
+  --green2:#009e60;
+  --cyan:#008db3;
+  --red:#d7263d;
+  --yellow:#ffb703;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:rgba(0,168,107,0.18);
+}
+
+/* Smooth transition */
+body{
+  transition: background .4s ease, color .4s ease;
+}
+
+nav, .comp-card, .status-card, .team-note, .hero-stat, .photo-slot{
+  transition: background .4s ease, border-color .4s ease;
+}
+/* ================= MOBILE FIX PRO ================= */
+@media (max-width: 768px){
+
+  /* NAV */
+  nav{
+    padding: 0.9rem 1.2rem;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  /* HERO */
+  .hero{
+    padding: 6rem 1.2rem 3rem;
+  }
+
+  .hero h1{
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+  }
+
+  .hero-sub{
+    font-size: 0.95rem;
+  }
+
+  .hero-stats{
+    gap: 0.8rem;
+  }
+
+  .hero-stat{
+    padding: 0.8rem 1rem;
+  }
+
+  /* FLOW */
+  .flow-step{
+    gap: 1rem;
+  }
+
+  .flow-num{
+    width: 42px;
+    height: 42px;
+    font-size: 0.8rem;
+  }
+
+  .flow-content h3{
+    font-size: 0.9rem;
+  }
+
+  .flow-content p{
+    font-size: 0.85rem;
+  }
+
+  /* COMPONENTS */
+  .comp-grid{
+    grid-template-columns: 1fr;
+  }
+
+  /* STATUS */
+  .status-row{
+    flex-direction: column;
+  }
+
+  .status-card{
+    width: 100%;
+  }
+
+  /* SPECS TABLE FIX */
+  .specs-table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+
+  /* PHOTOS */
+  .photo-grid{
+    grid-template-columns: 1fr;
+  }
+
+  /* TEAM */
+  .team-note{
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  /* SECTION PADDING */
+  .section-pad{
+    padding: 4rem 0;
+  }
+
+}
+
   </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Air<span>Guard</span> Mini</div>
+  <div class="nav-logo">Air<span>Guard</span> 2.0</div>
   <div class="nav-links">
     <a href="#funksioni">Si Funksionon</a>
     <a href="#komponentet">Komponentet</a>
     <a href="#foto">Fotot</a>
     <a href="#ekipi">Ekipi</a>
   </div>
+   <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
 </nav>
 
 <!-- HERO -->
@@ -799,8 +928,8 @@
 <section class="section-pad" id="ekipi">
   <div class="container">
     <div class="section-tag">// Ekipi & Institucioni</div>
-    <h2 class="section-title">Rreth Projektit</h2>
-    <p class="section-desc">Ky projekt është rezultat i punës ekipore, programimit dhe ndërtimit të hardware nga zero.</p>
+    <h2 class="section-title">Rreth Nesh</h2>
+    
 
     <div class="team-note">
       <div class="team-icon">🎓</div>
@@ -857,6 +986,29 @@
   }, { threshold: 0.15 });
 
   document.querySelectorAll('.flow-step, .comp-card').forEach(el => observer.observe(el));
+  // ================= THEME SYSTEM =================
+
+// Load saved theme
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+
+  if(savedTheme === "light"){
+    document.body.classList.add("light");
+    document.querySelector(".theme-toggle").textContent = "☀️";
+  }
+});
+
+// Toggle theme
+function toggleTheme(){
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+
+  document.querySelector(".theme-toggle").textContent = isLight ? "☀️" : "🌙";
+}
+
 </script>
 </body>
 </html>
